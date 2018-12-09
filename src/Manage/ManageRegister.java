@@ -55,7 +55,22 @@ public class ManageRegister {
 	}
 	
 	private void deleteStudent() {
+		List<User> list = daou.getUserList();
 		
+		for(User u : list) {
+			System.out.println(u);
+		}
+		
+		String userId = this.inputString("삭제할 학번 : ");
+		
+		user.setUserId(userId);
+		
+		boolean r = daou.deleteUser(user);
+		
+		if(r)
+			System.out.println("학적수정이 완료되었습니다.");
+		else
+			System.out.println("학적수정이 실패하였습니다.");
 	}
 	
 	private void modifyStudent() {
@@ -64,7 +79,27 @@ public class ManageRegister {
 		for(User u : list) {
 			System.out.println(u);
 		}
+		
 		String userId = this.inputString("변동할 학번 : ");
+		String pwd = this.inputString("비밀번호 : ");
+		String name = this.inputString("성명 (ex. 이성규) : ");
+		String birth = this.inputString("생년월일 (ex. 19940216) : ");
+		String addr = this.inputString("주소 : ");
+		String phoneNum = this.inputString("전화번호 : ");
+		
+		user.setUserId(userId);
+		user.setPwd(pwd);
+		user.setName(name);
+		user.setBirth(birth);
+		user.setAddr(addr);
+		user.setPhoneNum(phoneNum);
+		
+		boolean r = daou.modifyUser(user);
+		
+		if(r)
+			System.out.println("학적수정이 완료되었습니다.");
+		else
+			System.out.println("학적수정이 실패하였습니다.");
 	}
 	
 	private void inquiryStudent() {
@@ -74,6 +109,11 @@ public class ManageRegister {
 			System.out.println(u);
 		}
 		String userId = this.inputString("조회할 학번 : ");
+		user.setUserId(userId);
+		list = daou.inquiryStudent(userId);
+		for(User u : list) {
+			System.out.println(u);
+		}
 	}
 	
 	private void enrollStudent() {
@@ -94,9 +134,9 @@ public class ManageRegister {
 		boolean r = daou.InsertUser(user);
 		
 		if(r)
-			System.out.println("학생등록이 완료되었습니다.");
+			System.out.println("학적등록이 완료되었습니다.");
 		else
-			System.out.println("학생등록이 실패하였습니다.");
+			System.out.println("학적등록이 실패하였습니다.");
 
 		// 저장된 거 확인 겸 select 해봄
 		List<User> list = daou.getUserList();

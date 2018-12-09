@@ -9,7 +9,7 @@ public class User implements Serializable{
 	private String birth;
 	private String addr;
 	private String phoneNum;
-	private Float avgGrade = null;
+	private Float avgGrade = (float) 0;
 	
 	public User() {super();}
 	public User(String userId) {
