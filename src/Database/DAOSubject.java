@@ -111,7 +111,7 @@ public class DAOSubject {
 				PreparedStatement pstmt = conn.prepareStatement(sql);
 				
 				pstmt.setString(1, subject.getClassIdNum());
-				pstmt.setString(1, subject.getSubjectName());
+				pstmt.setString(2, subject.getSubjectName());
 				pstmt.setString(3, subject.getClassNum());
 				pstmt.setString(4, subject.getClassTime());
 				pstmt.setString(5, subject.getClassRoom());
