@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import Database.AllSubject;
 import Database.DAOAllSubject;
+import Database.User;
 
 public class ManageAllSubject {
 	String subjectName;
@@ -52,6 +53,17 @@ public class ManageAllSubject {
 		for(AllSubject u : list) {
 			System.out.println(u);
 		}
+		
+		String subjectName = this.inputString("삭제할 학번 : ");
+		
+		allSubject.setSubjectName(subjectName);
+		
+		boolean r = daoa.deleteAllSubject(allSubject);
+		
+		if(r)
+			System.out.println("교과목삭제가 완료되었습니다.");
+		else
+			System.out.println("교과목삭제가 실패하였습니다.");
 	}
 	
 	private void modifyAllSubject() {
@@ -60,17 +72,45 @@ public class ManageAllSubject {
 		for(AllSubject u : list) {
 			System.out.println(u);
 		}
+		
+		String subjectName = this.inputString("변동할 과목명 : ");
+		String profName = this.inputString("담당교수 : ");
+		Integer credit = this.inputInt("학점 : ");
+		
+		allSubject.setSubjectName(subjectName);
+		allSubject.setProfName(profName);
+		allSubject.setCredit(credit);
+		
+		boolean r = daoa.modifyAllSubject(allSubject);
+		
+		if(r)
+			System.out.println("교과목수정이 완료되었습니다.");
+		else
+			System.out.println("교과목수정이 실패하였습니다.");
+		
+		list = daoa.getAllSubjectList();
+		
+		for(AllSubject u : list) {
+			System.out.println(u);
+		}
 	}
 	
 	private void enrollAllSubject() {
+		String subjectName = this.inputString("과목명 : ");
+		String profName = this.inputString("담당교수 : ");
+		Integer credit = this.inputInt("학점 : ");
+
+		allSubject.setSubjectName(subjectName);
+		allSubject.setProfName(profName);
+		allSubject.setCredit(credit);
+		
 		boolean r = daoa.InsertAllSubject(allSubject);
 		
 		if(r)
-			System.out.println("개설 과목 등록이 완료되었습니다.");
+			System.out.println("교과목 등록이 완료되었습니다.");
 		else
-			System.out.println("개설 과목 등록이 실패하였습니다.");
+			System.out.println("교과목 등록이 실패하였습니다.");
 
-		// 저장된 거 확인 겸 select 해봄
 		List<AllSubject> list = daoa.getAllSubjectList();
 		
 		for(AllSubject u : list) {

@@ -22,10 +22,10 @@ public class DAOAllSubject {
 			System.out.println("클래스 로드 실패 : "+e.getMessage());
 		}
 	}
-	
+
 	private DAOAllSubject() {}
 	private static DAOAllSubject obj;
-	
+
 	public static DAOAllSubject sharedInstance() {
 		if(obj == null) {
 			obj = new DAOAllSubject();
@@ -34,16 +34,16 @@ public class DAOAllSubject {
 	}
 	// 데이터베이스 연동에 필요한 변수들을 선언
 	Connection conn;
-	
+
 	// SQL 실행에 필요한 변수
 	Statement stmt; 
-	
+
 	// select 구문을 수행했을 때 결과를 저장할 변수
 	private ResultSet rs;
-	
+
 	private boolean connect() {
 		boolean result = false;
-		
+
 		try{
 			conn = DriverManager.getConnection(DB_URL,USERNAME,PASSWORD);
 			System.out.println("\n- MySQL Connection");
@@ -53,7 +53,7 @@ public class DAOAllSubject {
 		}
 		return result;
 	}
-	
+
 	private void close() {
 		try {
 			if(rs != null)
@@ -66,7 +66,7 @@ public class DAOAllSubject {
 			System.out.println("해제 실패 : " + e.getMessage());
 		}
 	}
-	
+
 	public List<AllSubject> getAllSubjectList() { // select
 		List<AllSubject> list = null;
 		String sql = "SELECT * FROM allsubject";
@@ -75,19 +75,16 @@ public class DAOAllSubject {
 				stmt = conn.createStatement();
 				if(stmt != null) {
 					rs = stmt.executeQuery(sql);
-					
+
 					list = new ArrayList<AllSubject>();
-					
+
 					while(rs.next()) {
 						AllSubject allSubject = new AllSubject();
-						
-						allSubject.setClassIdNum(rs.getString("classIdNum"));
-						allSubject.setsubjectName(rs.getString("subjectName"));
-						allSubject.setClassIdNum(rs.getString("classNum"));
-						allSubject.setClassTime(rs.getString("classTime"));
-						allSubject.setClassRoom(rs.getString("classRoom"));
-						allSubject.setAvailNum(rs.getInt("availNum"));
-						
+
+						allSubject.setSubjectName(rs.getString("subjectName"));
+						allSubject.setProfName(rs.getString("profName"));
+						allSubject.setCredit(rs.getInt("credit"));
+
 						list.add(allSubject);
 					}
 				}
@@ -95,35 +92,80 @@ public class DAOAllSubject {
 				e.printStackTrace();
 			}
 		}else {
-			// 연결에 실패했을 때 작업
 			System.out.println("데이터베이스 연결에 실패했습니다.");
 			System.exit(0);
 		}
 		return list;
 	}
-	
+
 	public boolean InsertAllSubject(AllSubject allSubject) {
 		boolean result = false;
-		
+
 		if(this.connect()) {
 			try {
-				String sql = "INSERT INTO allsubject VALUES (?, ?, ?, ?, ?, ?, ?)";
+				String sql = "INSERT INTO allsubject VALUES (?, ?, ?)";
 				PreparedStatement pstmt = conn.prepareStatement(sql);
-				
-				pstmt.setString(1, allSubject.getClassIdNum());
-				pstmt.setString(2, allSubject.getsubjectName());
-				pstmt.setString(3, allSubject.getClassNum());
-				pstmt.setString(4, allSubject.getClassTime());
-				pstmt.setString(5, allSubject.getClassRoom());
-				pstmt.setString(6, allSubject.getSyllabus());
-				pstmt.setInt(7, allSubject.getAvailNum());
-				
+
+				pstmt.setString(1, allSubject.getSubjectName());
+				pstmt.setString(2, allSubject.getProfName());
+				pstmt.setInt(3, allSubject.getCredit());
+
 				int r = pstmt.executeUpdate();
-				
+
 				if(r>0) {
 					result = true;
 				}
-				// 데이터베이스 생성 객체 해제
+				pstmt.close();
+				this.close();
+			} catch(SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		} else {
+			System.out.println("데이터베이스 연결에 실패");
+			System.exit(0);
+		}
+		return result;
+	}
+
+	public boolean modifyAllSubject(AllSubject allSubject) {
+		boolean result = false;
+
+		if(this.connect()) {
+			try {
+				String sql = "UPDATE allsubject set profName='"+ allSubject.getProfName()+"', credit='"+allSubject.getCredit()+"' "
+						+ "WHERE subjectName ='"+allSubject.getSubjectName()+"'";
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+
+				int r = pstmt.executeUpdate();
+
+				if(r>0) {
+					result = true;
+				}
+				pstmt.close();
+				this.close();
+			} catch(SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		} else {
+			System.out.println("데이터베이스 연결에 실패");
+			System.exit(0);
+		}
+		return result;
+	}
+
+	public boolean deleteAllSubject(AllSubject allSubject) {
+		boolean result = false;
+
+		if(this.connect()) {
+			try {
+				String sql = "DELETE from allSubject WHERE subjectName='"+allSubject.getSubjectName()+"'";
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+
+				int r = pstmt.executeUpdate();
+
+				if(r>0) {
+					result = true;
+				}
 				pstmt.close();
 				this.close();
 			} catch(SQLException e) {

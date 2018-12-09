@@ -202,7 +202,6 @@ public class DAOUser {
 	}
 
 	public boolean deleteUser(User user) {
-
 		boolean result = false;
 
 		if(this.connect()) {

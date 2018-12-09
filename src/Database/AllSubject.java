@@ -3,37 +3,23 @@ package Database;
 import java.io.Serializable;
 
 public class AllSubject implements Serializable{
-	private String classIdNum;
 	private String subjectName;
-	private String classNum;
-	private String classTime;
-	private String classRoom;
-	private String syllabus;
-	private Integer availNum;
+	private String profName;
+	private Integer credit;
 	
 	public AllSubject() {super();}	
-	public AllSubject(String classIdNum) {
+	public AllSubject(String subjectName) {
 		super();
-		this.classIdNum = classIdNum;
+		this.subjectName = subjectName;
 	}
-	public String getClassIdNum() {return classIdNum;}
-	public void setClassIdNum(String classIdNum) {this.classIdNum = classIdNum;}
-	public String getsubjectName() {return subjectName;}
-	public void setsubjectName(String subjectName) {this.subjectName = subjectName;}
-	public String getClassNum() {return classNum;}
-	public void setClassNum(String classNum) {this.classNum = classNum;}
-	public String getClassTime() {return classTime;}
-	public void setClassTime(String classTime) {this.classTime = classTime;}
-	public String getClassRoom() {return classRoom;}
-	public void setClassRoom(String classRoom) {this.classRoom = classRoom;}
-	public String getSyllabus() {return syllabus;}
-	public void setSyllabus(String syllabus) {this.syllabus = syllabus;}
-	public Integer getAvailNum() {return availNum;}
-	public void setAvailNum(Integer availNum) {this.availNum = availNum;}
+	public String getSubjectName() {return subjectName;}
+	public void setSubjectName(String subjectName) {this.subjectName = subjectName;}
+	public String getProfName() {return profName;}
+	public void setProfName(String profName) {this.profName = profName;}
+	public Integer getCredit() {return credit;}
+	public void setCredit(Integer credit) {this.credit = credit;}
 	@Override
 	public String toString() {
-		return "<ALLSUBJECT>classIdNum : "+classIdNum+" subjectName : "+ subjectName+" classNum : "+classNum
-				+" classTime : "+classTime +" classRoom : "+classRoom+" syllabus : "+syllabus
-				+" availNum : "+availNum;
+		return "<ALLSUBJECT>subjectName : "+subjectName+" profName : "+ profName+" credit : "+credit;
 	}
 }
