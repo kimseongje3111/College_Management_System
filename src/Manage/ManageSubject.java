@@ -3,13 +3,18 @@ package Manage;
 import java.util.List;
 import java.util.Scanner;
 
+import Database.AllSubject;
 import Database.DAOSubject;
 import Database.Subject;
 
 public class ManageSubject {
+	String classIdNum;
 	String subjectName;
-	String profName;
-	Integer credit;
+	String classNum;
+	String classTime;
+	String classRoom;
+	String syllabus;
+	Integer availNum;
 	Scanner scan = new Scanner(System.in);
 	DAOSubject daos = DAOSubject.sharedInstance();
 	Subject subject = new Subject();
@@ -52,6 +57,17 @@ public class ManageSubject {
 		for(Subject u : list) {
 			System.out.println(u);
 		}
+		
+		String subjectName = this.inputString("삭제할 학번 : ");
+		
+		subject.setSubjectName(subjectName);
+		
+		boolean r = daos.deleteSubject(subject);
+		
+		if(r)
+			System.out.println("교과목삭제가 완료되었습니다.");
+		else
+			System.out.println("교과목삭제가 실패하였습니다.");
 	}
 	
 	private void modifySubject() {
@@ -60,18 +76,61 @@ public class ManageSubject {
 		for(Subject u : list) {
 			System.out.println(u);
 		}
+		
+		String classIdNum = this.inputString("학수번호 : ");
+		String subjectName = this.inputString("과목명 : ");
+		String classNum = this.inputString("분반 : ");
+		String classTime = this.inputString("강의시간 : ");
+		String classRoom = this.inputString("강의실 : ");
+		String syllabus = this.inputString("강의계획서 : ");
+		Integer availNum = this.inputInt("최대 수강 인원 : ");
+
+		subject.setClassIdNum(classIdNum);
+		subject.setSubjectName(subjectName);
+		subject.setClassNum(classNum);
+		subject.setClassTime(classTime);
+		subject.setClassRoom(classRoom);
+		subject.setSyllabus(syllabus);
+		subject.setAvailNum(availNum);
+		
+		boolean r = daos.modifySubject(subject);
+		
+		if(r)
+			System.out.println("교과목수정이 완료되었습니다.");
+		else
+			System.out.println("교과목수정이 실패하였습니다.");
+		
+		list = daos.getSubjectList();
+		
+		for(Subject u : list) {
+			System.out.println(u);
+		}
 	}
 
 	private void enrollSubject() {
+		String classIdNum = this.inputString("학수번호 : ");
+		String subjectName = this.inputString("과목명 : ");
+		String classNum = this.inputString("분반 : ");
+		String classTime = this.inputString("강의시간 : ");
+		String classRoom = this.inputString("강의실 : ");
+		String syllabus = this.inputString("강의계획서 : ");
+		Integer availNum = this.inputInt("최대 수강 인원 : ");
+
+		subject.setClassIdNum(classIdNum);
+		subject.setSubjectName(subjectName);
+		subject.setClassNum(classNum);
+		subject.setClassTime(classTime);
+		subject.setClassRoom(classRoom);
+		subject.setSyllabus(syllabus);
+		subject.setAvailNum(availNum);
 		
 		boolean r = daos.InsertSubject(subject);
 		
 		if(r)
-			System.out.println("교과목등록이 완료되었습니다.");
+			System.out.println("교과목 등록이 완료되었습니다.");
 		else
-			System.out.println("교과목등록이 실패하였습니다.");
+			System.out.println("교과목 등록이 실패하였습니다.");
 
-		// 저장된 거 확인 겸 select 해봄
 		List<Subject> list = daos.getSubjectList();
 		
 		for(Subject u : list) {
