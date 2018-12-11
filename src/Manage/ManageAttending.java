@@ -11,7 +11,7 @@ import Database.Subject;
 public class ManageAttending {
 	String classIdNum;
 	String userId;
-	Float grade;
+	String subjectName;
 	Scanner scan = new Scanner(System.in);
 	DAOSubject daos = DAOSubject.sharedInstance();
 	DAOGrade daog = DAOGrade.sharedInstance();
@@ -65,6 +65,7 @@ public class ManageAttending {
 	}
 
 	private void inquirySyllabus() {
+		// 학수번호로 조회해야 한다. 왜냐하면 과목명으로는 다른 강의계획서가 존재할 수도 있다.
 		
 	}
 
