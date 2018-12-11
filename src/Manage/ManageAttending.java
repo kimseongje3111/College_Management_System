@@ -11,7 +11,7 @@ import Database.Subject;
 public class ManageAttending {
 	String classIdNum;
 	String userId;
-	String subjectName;
+	Float grade;
 	Scanner scan = new Scanner(System.in);
 	DAOSubject daos = DAOSubject.sharedInstance();
 	DAOGrade daog = DAOGrade.sharedInstance();
