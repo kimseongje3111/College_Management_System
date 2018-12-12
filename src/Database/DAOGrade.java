@@ -128,4 +128,36 @@ public class DAOGrade {
 		}
 		return result;
 	}
+
+	public List<Grade> getUserGradeList(String newAttenduserId) {
+		List<Grade> list = null;
+		String sql = "SELECT * FROM grade WHERE userId ='"+newAttenduserId+"'";
+		if(connect()) {
+			try {
+				stmt = conn.createStatement();
+				if(stmt != null) {
+					rs = stmt.executeQuery(sql);
+					
+					list = new ArrayList<Grade>();
+					
+					while(rs.next()) {
+						Grade grade = new Grade();
+						
+						grade.setClassIdNum(rs.getString("classIdNum"));
+						grade.setUserId(rs.getString("userId"));
+						grade.setGrade(rs.getFloat("grade"));
+						
+						list.add(grade);
+					}
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}else {
+			// 연결에 실패했을 때 작업
+			System.out.println("데이터베이스 연결에 실패했습니다.");
+			System.exit(0);
+		}
+		return list;
+	}
 }
