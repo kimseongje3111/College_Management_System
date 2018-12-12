@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import Database.DAOGrade;
 import Database.DAOSubject;
+import Database.DAOUser;
 import Database.Grade;
 import Database.Subject;
 import Database.User;
@@ -16,7 +17,9 @@ public class ManageAttending {
 	Scanner scan = new Scanner(System.in);
 	DAOSubject daos = DAOSubject.sharedInstance();
 	DAOGrade daog = DAOGrade.sharedInstance();
+	DAOUser daou = DAOUser.sharedInstance();
 	Subject subject = new Subject();
+	Grade gradee = new Grade();
 	User user = new User();
 	
 	public void run() {
@@ -66,19 +69,61 @@ public class ManageAttending {
 	}
 
 	private void attendClass() {
-		String newAttendClassIdNum = this.inputString("수강 신청할 학수번호 : ");
-		subject.setPhoneNum(phoneNum);
-		
-		boolean r = daou.modifyUser(user);
-		
 		String newAttenduserId = this.inputString("수강 신청할 학생의 학번 : ");
+		String newAttendClassIdNum = this.inputString("수강 신청할 학수번호 : ");
 		
+		List<Grade> listg = daog.getUserGradeList(newAttenduserId); // 학번의 수강신청 내역
+		List<Subject> SubjectofNew = daos.inquirySubjectList(newAttendClassIdNum); // 학수번호로 개설과목 한개 조회
+		String classTime = null;
+		String classStime = null, classEtime = null;
+		if(SubjectofNew.size()>=1) {
+			System.out.println("학수번호 사이즈 : "+SubjectofNew.size());
+			classTime = SubjectofNew.get(0).getClassTime();
+			classStime = classTime.split("-")[0];
+			classEtime = classTime.split("-")[1];
+		}
 		
+
+		boolean acceptAttend = true;
+		for(Grade u : listg) { // 한 학번에 대하여 신청된 모든 학수번호에 대하여...
+			// 입력받은 학수번호의 강의시간이 겹치는지 확인
+			List<Subject> SubjectofOne = daos.inquirySubjectList(u.getClassIdNum());
+			String CT = SubjectofOne.get(0).getClassTime();
+			String ST = CT.split("-")[0];
+			String ET = CT.split("-")[1];
+			// 강의 시간이 겹치지 않는지 확인
+			if(Integer.parseInt(classStime) != Integer.parseInt(ST)) {
+				if(Integer.parseInt(classStime) < Integer.parseInt(ST)) {
+					if(Integer.parseInt(classEtime) > Integer.parseInt(ST)) {
+						acceptAttend = false;
+						break;
+					}
+				} else {
+					if (Integer.parseInt(classStime) < Integer.parseInt(ET)) {
+						acceptAttend = false;
+						break;
+					}
+				}
+			} else {
+				acceptAttend = false;
+				break;
+			}
+		}
+		
+		if(!acceptAttend) {
+			System.out.println("강의 시간이 겹칩니다.");
+		} else {
+			gradee.setClassIdNum(newAttendClassIdNum);
+			gradee.setUserId(newAttenduserId);
+			gradee.setGrade((float)0);
+			daog.InsertGrade(gradee);
+		}
 	}
 
 	private void inquirySyllabus() {
 		// 학수번호로 조회해야 한다. 왜냐하면 과목명으로는 다른 강의계획서가 존재할 수도 있다.
 		
+		String inquiryClassIdNum = this.inputString("강의계획서를 조회할 학수번호를 입력하세요 : ");
 	}
 
 	private void inquiryTimetable() {
