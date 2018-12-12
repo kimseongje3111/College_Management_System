@@ -55,12 +55,17 @@ public class ManageGrade {
 	}
 
 	private void checkReport() {
+		// 학생의 학번을 입력받고 학생의 모든 성적을 보여준다
 	}
 
 	private void fixGrade() {
+		// 학수번호와 학번 입력하고 성적수정
+		// 성적이 존재하면 수정 가능하게
 	}
 
 	private void giveGrade() {
+		// 학수번호와 학번 입력하고 성적등록
+		// 성적이 존재하면 등록 불가하게
 	}
 
 	private int inputInt(String string) {

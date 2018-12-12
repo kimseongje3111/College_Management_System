@@ -59,9 +59,11 @@ public class ManageAttending {
 	}
 	
 	private void deleteClass() {
+		
 	}
 
 	private void attendClass() {
+		// 개설 과목에 있는 학수번호 확인
 	}
 
 	private void inquirySyllabus() {
