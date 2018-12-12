@@ -7,6 +7,7 @@ import Database.DAOGrade;
 import Database.DAOSubject;
 import Database.Grade;
 import Database.Subject;
+import Database.User;
 
 public class ManageAttending {
 	String classIdNum;
@@ -15,6 +16,8 @@ public class ManageAttending {
 	Scanner scan = new Scanner(System.in);
 	DAOSubject daos = DAOSubject.sharedInstance();
 	DAOGrade daog = DAOGrade.sharedInstance();
+	Subject subject = new Subject();
+	User user = new User();
 	
 	public void run() {
 		boolean run = true;
@@ -63,7 +66,14 @@ public class ManageAttending {
 	}
 
 	private void attendClass() {
-		// 개설 과목에 있는 학수번호 확인
+		String newAttendClassIdNum = this.inputString("수강 신청할 학수번호 : ");
+		subject.setPhoneNum(phoneNum);
+		
+		boolean r = daou.modifyUser(user);
+		
+		String newAttenduserId = this.inputString("수강 신청할 학생의 학번 : ");
+		
+		
 	}
 
 	private void inquirySyllabus() {
