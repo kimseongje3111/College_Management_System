@@ -188,4 +188,39 @@ public class DAOSubject {
 		}
 		return result;
 	}
+
+	public List<Subject> inquirySubjectList(String classIdNum) {
+		List<Subject> list = null;
+		String sql = "SELECT * FROM subject WHERE classIdNum='"+classIdNum+"'";
+		if(connect()) {
+			try {
+				stmt = conn.createStatement();
+				if(stmt != null) {
+					rs = stmt.executeQuery(sql);
+					
+					list = new ArrayList<Subject>();
+					
+					while(rs.next()) {
+						Subject subject = new Subject();
+						subject.setClassIdNum(rs.getString("classIdNum"));
+						subject.setSubjectName(rs.getString("subjectName"));
+						subject.setClassNum(rs.getString("classNum"));
+						subject.setClassTime(rs.getString("classTime"));
+						subject.setClassRoom(rs.getString("classRoom"));
+						subject.setSyllabus(rs.getString("syllabus"));
+						subject.setAvailNum(rs.getInt("availNum"));
+						
+						list.add(subject);
+					}
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}else {
+			// 연결에 실패했을 때 작업
+			System.out.println("데이터베이스 연결에 실패했습니다.");
+			System.exit(0);
+		}
+		return list;
+	}
 }
